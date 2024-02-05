@@ -92,7 +92,7 @@ const main = async () => {
 
       console.log("timeLeft", timeLeft);
 
-      if (timeLeft < 60) {
+      if (timeLeft < 15 && timeLeft > 0 ) {
         const { transactions, blockhash } = await buyTicketTransactions(
           walletId,
           "dragon",
