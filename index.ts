@@ -5,10 +5,14 @@ import {
   getTotalTicketPrice,
   connection,
   programId,
+  authority,
+  VAULT_SEED_V2,
+  GAME_SEED_V2,
 } from "./helper";
 import { PublicKey, Keypair } from "@solana/web3.js";
 import { IDL } from "./IDL";
 import { config } from "dotenv";
+import { encode } from "@coral-xyz/anchor/dist/cjs/utils/bytes/utf8";
 config();
 
 const devWallet = Uint8Array.from(JSON.parse(process.env.SCRIPT_KEYPAIR!));
@@ -92,7 +96,7 @@ const main = async () => {
 
       console.log("timeLeft", timeLeft);
 
-      if (timeLeft < 15 && timeLeft > 0 ) {
+      if (timeLeft < 15 && timeLeft > 0 && gameInfo!.totalTickets.toNumber() > 30000 ) {
         const { transactions, blockhash } = await buyTicketTransactions(
           walletId,
           "dragon",

@@ -12,10 +12,10 @@ config();
 
 let { encode } = utils.bytes.utf8;
 
-const RANDOM_NUM_SEED = "random_num_account001";
-const VAULT_SEED_V2 = "vault_account000_v2";
-const GAME_SEED_V2 = "game_account000_v2";
-const USER_SEED_V2 = "user_account000_v2";
+export const RANDOM_NUM_SEED = "random_num_account001";
+export const VAULT_SEED_V2 = "vault_account000_v2";
+export const GAME_SEED_V2 = "game_account000_v2";
+export const USER_SEED_V2 = "user_account000_v2";
 
 export const connection = new Connection(process.env.BACKEND_RPC!, "processed");
 
@@ -204,7 +204,7 @@ export const buyTicketTransactions = async (
       ComputeBudgetProgram.setComputeUnitLimit({ units: 1_400_000 }),
       ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 100_000 }),
       await program.methods
-        .buyTicket(team, BN(quantity))
+        .buyTicket(team, new BN(quantity))
         .accounts({
           gameAccount,
           prevGameAccount,
