@@ -112,7 +112,7 @@ const main = async () => {
 
       console.log("timeLeft", timeLeft);
 
-      if (timeLeft < 5 && timeLeft > 0 && gameInfo!.totalTickets.toNumber() > 30000 ) {
+      if (timeLeft < 10 && timeLeft > 0 && gameInfo!.totalTickets.toNumber() > 30000 ) {
         const { transactions, blockhash } = await buyTicketTransactions(
           walletId,
           "dragon",
