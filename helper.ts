@@ -52,7 +52,7 @@ export const getTotalTicketPrice = (
   let totalPrice = 0;
 
   for (let i = ticketStartNum; i < ticketStartNum + quantity; ++i) {
-    totalPrice += 1e6 + 5 * i + 100 * Math.pow(1.0002, Math.max(0, i - 1.47e6));
+    totalPrice += 1e6 + 1e3 * i + 100 * Math.pow(1.01, Math.max(0, i - 1e4));
   }
 
   return totalPrice / 1e9;
@@ -169,14 +169,17 @@ export const buyTicketTransactions = async (
   );
 
   const transactions: Transaction[] = [];
-  const blockhash = await connection.getLatestBlockhash("processed");
+  const blockhashContext = await connection.getLatestBlockhash("processed");
+
+  const blockhash = blockhashContext.blockhash;
+  const lastValidBlockHeight = blockhashContext.lastValidBlockHeight;
 
   for (let i = 0, j = 0; i < numOfTickets; ++j) {
     let transaction = new Transaction();
     transaction.feePayer = buyer;
 
-    transaction.recentBlockhash = blockhash.blockhash;
-    transaction.lastValidBlockHeight = blockhash.lastValidBlockHeight;
+    transaction.recentBlockhash = blockhash;
+    transaction.lastValidBlockHeight = lastValidBlockHeight;
 
     if (
       i !== 0 ||
@@ -202,7 +205,7 @@ export const buyTicketTransactions = async (
 
     transaction.add(
       ComputeBudgetProgram.setComputeUnitLimit({ units: 1_400_000 }),
-      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 100_000 }),
+      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 200_000 }),
       await program.methods
         .buyTicket(team, new BN(quantity))
         .accounts({
@@ -224,5 +227,5 @@ export const buyTicketTransactions = async (
     i += quantity;
   }
 
-  return { transactions, blockhash };
+  return { transactions, blockhash, lastValidBlockHeight };
 };

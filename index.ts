@@ -24,12 +24,12 @@ const devWalletKey = Keypair.fromSecretKey(devWallet);
 //   "HUqbrRwSfgGS9VtUKTHgRs2Z9n5kWHHKKyGf8um3uhMR"
 // );
 
-const http = require('http');
+const http = require("http");
 
 // Create a server instance
-const server = http.createServer((req:any, res:any) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Hello, World!\n');
+const server = http.createServer((req: any, res: any) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Hello, World!\n");
 });
 
 // Specify the port for the server to listen on
@@ -52,7 +52,7 @@ const main = async () => {
 
       let [vaultAccount] = PublicKey.findProgramAddressSync(
         [encode(VAULT_SEED_V2), authority.toBuffer()],
-        program.programId,
+        program.programId
       );
 
       let vaultInfo = await program.account.vaultAccountV2.fetch(
@@ -81,7 +81,7 @@ const main = async () => {
 
         [gameAccount] = PublicKey.findProgramAddressSync(
           [encode(GAME_SEED_V2), authority.toBuffer(), buffer],
-          program.programId,
+          program.programId
         );
       } else if (!gameAccount) return null;
 
@@ -92,11 +92,16 @@ const main = async () => {
 
       // let ticketNum = 0;
 
-      // let ticketStartNum =
-      //   gameInfo!.totalTickets.toNumber() -
-      //   gameInfo!.constTickets.toNumber() +
-      //   1;
+      let ticketStartNum =
+        gameInfo!.totalTickets.toNumber() -
+        gameInfo!.constTickets.toNumber() +
+        1;
 
+      let price = getTotalTicketPrice(ticketStartNum, 1);
+
+      let BOT_TRIGGER = 15;
+
+      if (price > 1) BOT_TRIGGER = 20;
       // let i = 0;
       // let flag = true;
 
@@ -110,16 +115,33 @@ const main = async () => {
 
       let timeLeft = gameInfo!.endTime.toNumber() - Date.now() / 1000;
 
-      console.log("timeLeft", timeLeft, "tickets bought",gameInfo!.totalTickets.toNumber(),"lastKey",gameInfo!.lastBuyer?.toBase58());
+      console.log(
+        "timeLeft",
+        timeLeft,
+        "tickets bought",
+        gameInfo!.totalTickets.toNumber(),
+        "lastKey",
+        gameInfo!.lastBuyer?.toBase58()
+      );
 
-      if (timeLeft < 15 && timeLeft > 0 && gameInfo!.totalTickets.toNumber() > 30000 && gameInfo!.lastBuyer?.toBase58()!=walletId.toBase58()) {
-        const { transactions, blockhash } = await buyTicketTransactions(
-          walletId,
-          "dragon",
-          1,
-          buyTicketAccounts,
-          program
-        );
+      let waitTime = 5000;
+
+      if (
+        timeLeft < BOT_TRIGGER &&
+        timeLeft > 0 &&
+        gameInfo!.totalTickets.toNumber() > 30000 &&
+        gameInfo!.lastBuyer?.toBase58() != walletId.toBase58()
+      ) {
+        waitTime = 2000;
+
+        const { transactions, blockhash, lastValidBlockHeight } =
+          await buyTicketTransactions(
+            walletId,
+            "whale",
+            1,
+            buyTicketAccounts,
+            program
+          );
 
         transactions[0].partialSign(devWalletKey);
         let txSig = await connection.sendRawTransaction(
@@ -129,9 +151,9 @@ const main = async () => {
           }
         );
 
-        console.log("executing buy", txSig);
+        console.log("txSig: ", txSig);
       }
-      await new Promise((r) => setTimeout(r, 5000));
+      await new Promise((r) => setTimeout(r, waitTime));
     } catch (e) {
       console.log(e);
     }
