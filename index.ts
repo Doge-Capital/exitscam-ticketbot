@@ -24,6 +24,22 @@ const devWalletKey = Keypair.fromSecretKey(devWallet);
 //   "HUqbrRwSfgGS9VtUKTHgRs2Z9n5kWHHKKyGf8um3uhMR"
 // );
 
+const http = require('http');
+
+// Create a server instance
+const server = http.createServer((req:any, res:any) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello, World!\n');
+});
+
+// Specify the port for the server to listen on
+const port = 3000; // Use the port specified in the environment variable PORT, or default to port 3000
+
+// Start the server and listen for incoming connections
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
 const main = async () => {
   while (true) {
     try {
@@ -96,7 +112,7 @@ const main = async () => {
 
       console.log("timeLeft", timeLeft);
 
-      if (timeLeft < 15 && timeLeft > 0 && gameInfo!.totalTickets.toNumber() > 30000 ) {
+      if (timeLeft < 5 && timeLeft > 0 && gameInfo!.totalTickets.toNumber() > 30000 ) {
         const { transactions, blockhash } = await buyTicketTransactions(
           walletId,
           "dragon",
