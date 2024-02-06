@@ -110,9 +110,9 @@ const main = async () => {
 
       let timeLeft = gameInfo!.endTime.toNumber() - Date.now() / 1000;
 
-      console.log("timeLeft", timeLeft);
+      console.log("timeLeft", timeLeft, "tickets bought",gameInfo!.totalTickets.toNumber());
 
-      if (timeLeft < 10 && timeLeft > 0 && gameInfo!.totalTickets.toNumber() > 30000 ) {
+      if (timeLeft < 15 && timeLeft > 0 && gameInfo!.totalTickets.toNumber() > 30000 ) {
         const { transactions, blockhash } = await buyTicketTransactions(
           walletId,
           "dragon",
