@@ -33,7 +33,7 @@ const server = http.createServer((req:any, res:any) => {
 });
 
 // Specify the port for the server to listen on
-const port = 3000; // Use the port specified in the environment variable PORT, or default to port 3000
+const port = 3001; // Use the port specified in the environment variable PORT, or default to port 3000
 
 // Start the server and listen for incoming connections
 server.listen(port, () => {
@@ -110,9 +110,9 @@ const main = async () => {
 
       let timeLeft = gameInfo!.endTime.toNumber() - Date.now() / 1000;
 
-      console.log("timeLeft", timeLeft, "tickets bought",gameInfo!.totalTickets.toNumber());
+      console.log("timeLeft", timeLeft, "tickets bought",gameInfo!.totalTickets.toNumber(),"lastKey",gameInfo!.lastBuyer?.toBase58());
 
-      if (timeLeft < 15 && timeLeft > 0 && gameInfo!.totalTickets.toNumber() > 30000 ) {
+      if (timeLeft < 15 && timeLeft > 0 && gameInfo!.totalTickets.toNumber() > 30000 && gameInfo!.lastBuyer?.toBase58()!=walletId.toBase58()) {
         const { transactions, blockhash } = await buyTicketTransactions(
           walletId,
           "dragon",
