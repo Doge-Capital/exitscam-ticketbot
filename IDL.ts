@@ -11,22 +11,12 @@ export type Fomo3d = {
           isSigner: false;
         },
         {
-          name: "randomNumAccount";
-          isMut: true;
-          isSigner: false;
-        },
-        {
           name: "internalAccount";
           isMut: false;
           isSigner: false;
         },
         {
           name: "teamAccount";
-          isMut: false;
-          isSigner: false;
-        },
-        {
-          name: "randomNumAuthority";
           isMut: false;
           isSigner: false;
         },
@@ -63,27 +53,6 @@ export type Fomo3d = {
         }
       ];
       args: [];
-    },
-    {
-      name: "generateRandomNum";
-      accounts: [
-        {
-          name: "randomNumAccount";
-          isMut: true;
-          isSigner: false;
-        },
-        {
-          name: "authority";
-          isMut: false;
-          isSigner: true;
-        }
-      ];
-      args: [
-        {
-          name: "randomNum";
-          type: "u64";
-        }
-      ];
     },
     {
       name: "settleReward";
@@ -145,15 +114,15 @@ export type Fomo3d = {
           isSigner: false;
         },
         {
-          name: "randomNumAccount";
-          isMut: true;
-          isSigner: false;
-        },
-        {
           name: "referrerAccount";
           isMut: true;
           isSigner: false;
           isOptional: true;
+        },
+        {
+          name: "btcPriceAccount";
+          isMut: false;
+          isSigner: false;
         },
         {
           name: "systemProgram";
@@ -228,81 +197,30 @@ export type Fomo3d = {
         }
       ];
       args: [];
+    },
+    {
+      name: "extendGame";
+      accounts: [
+        {
+          name: "gameAccount";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "authority";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        }
+      ];
+      args: [];
     }
   ];
   accounts: [
-    {
-      name: "vaultAccount";
-      type: {
-        kind: "struct";
-        fields: [
-          {
-            name: "totalAmount";
-            type: "u64";
-          },
-          {
-            name: "balanceAmount";
-            type: "u64";
-          },
-          {
-            name: "burnedAmount";
-            type: "u64";
-          },
-          {
-            name: "teamAmount";
-            type: "u64";
-          },
-          {
-            name: "refCreationAmount";
-            type: "u64";
-          },
-          {
-            name: "totalWallets";
-            type: "u64";
-          },
-          {
-            name: "isInitialized";
-            type: "bool";
-          },
-          {
-            name: "authority";
-            type: "publicKey";
-          },
-          {
-            name: "currGameId";
-            type: "u16";
-          },
-          {
-            name: "internalAccount";
-            type: "publicKey";
-          },
-          {
-            name: "teamAccount";
-            type: "publicKey";
-          },
-          {
-            name: "sidepotAmount";
-            type: "u64";
-          },
-          {
-            name: "sidepotProbability";
-            type: "u64";
-          },
-          {
-            name: "sidepotAmountWon";
-            type: "u64";
-          },
-          {
-            name: "lastSidepotWinner";
-            type: "publicKey";
-          },
-          {
-            name: "bump";
-            type: "u8";
-          }
-        ];
-      };
-    },
     {
       name: "vaultAccountV2";
       type: {
@@ -400,97 +318,6 @@ export type Fomo3d = {
       };
     },
     {
-      name: "gameAccount";
-      type: {
-        kind: "struct";
-        fields: [
-          {
-            name: "gameId";
-            type: "u16";
-          },
-          {
-            name: "totalTickets";
-            type: "u64";
-          },
-          {
-            name: "constTickets";
-            type: "u64";
-          },
-          {
-            name: "totalAmount";
-            type: "u64";
-          },
-          {
-            name: "jackpotAmount";
-            type: "u64";
-          },
-          {
-            name: "playersAmount";
-            type: "u64";
-          },
-          {
-            name: "burnedAmount";
-            type: "u64";
-          },
-          {
-            name: "teamWiseAmount";
-            type: {
-              array: ["u64", 4];
-            };
-          },
-          {
-            name: "teamWiseTickets";
-            type: {
-              array: ["u64", 4];
-            };
-          },
-          {
-            name: "teamAmount";
-            type: "u64";
-          },
-          {
-            name: "startTime";
-            type: "i64";
-          },
-          {
-            name: "endTime";
-            type: "i64";
-          },
-          {
-            name: "lastBuyer";
-            type: {
-              option: "publicKey";
-            };
-          },
-          {
-            name: "isClaimed";
-            type: "bool";
-          },
-          {
-            name: "isInitialized";
-            type: "bool";
-          },
-          {
-            name: "authority";
-            type: "publicKey";
-          },
-          {
-            name: "bump";
-            type: "u8";
-          },
-          {
-            name: "playersAmountPerTicket";
-            docs: [
-              "Amount of money single player gets from a single bought ticket.",
-              "It is accumulated from the start of the game",
-              "sum(i_th_ticket_price * i_th_players_percentage / total_tickets)"
-            ];
-            type: "u64";
-          }
-        ];
-      };
-    },
-    {
       name: "gameAccountV2";
       type: {
         kind: "struct";
@@ -572,104 +399,6 @@ export type Fomo3d = {
           {
             name: "playersAmountPerTicket";
             type: "f64";
-          }
-        ];
-      };
-    },
-    {
-      name: "userAccount";
-      type: {
-        kind: "struct";
-        fields: [
-          {
-            name: "totalTickets";
-            type: "u64";
-          },
-          {
-            name: "currGame";
-            type: "publicKey";
-          },
-          {
-            name: "currGameTickets";
-            type: "u64";
-          },
-          {
-            name: "totalAmount";
-            type: "u64";
-          },
-          {
-            name: "referralAmount";
-            type: "u64";
-          },
-          {
-            name: "referrerAuthority";
-            type: {
-              option: "publicKey";
-            };
-          },
-          {
-            name: "balanceAmount";
-            type: "u64";
-          },
-          {
-            name: "playersAmount";
-            type: "u64";
-          },
-          {
-            name: "sidepotAmount";
-            type: "u64";
-          },
-          {
-            name: "sidepotWins";
-            type: "u32";
-          },
-          {
-            name: "currEarnedGameId";
-            type: "u16";
-          },
-          {
-            name: "currPlayersAmount";
-            type: "u64";
-          },
-          {
-            name: "currReferralAmount";
-            type: "u64";
-          },
-          {
-            name: "currSidepotAmount";
-            type: "u64";
-          },
-          {
-            name: "isReferralCodeUsed";
-            type: "bool";
-          },
-          {
-            name: "isReferralCodeCreated";
-            type: "bool";
-          },
-          {
-            name: "isInitialized";
-            type: "bool";
-          },
-          {
-            name: "isSettled";
-            type: "bool";
-          },
-          {
-            name: "authority";
-            type: "publicKey";
-          },
-          {
-            name: "bump";
-            type: "u8";
-          },
-          {
-            name: "playersAmountPerTicket";
-            docs: [
-              "periodically synced with GameAccount's players_amount_per_ticket.",
-              "syncing happens in settle_rewards and buy instructions."
-            ];
-            type: "u64";
           }
         ];
       };
@@ -859,73 +588,88 @@ export type Fomo3d = {
     },
     {
       code: 6013;
-      name: "RandomNumAlreadyUsed";
-      msg: "Random number has already been utilised";
-    },
-    {
-      code: 6014;
       name: "InvalidQuantity";
       msg: "Ticket quantity must be greater than 0";
     },
     {
-      code: 6015;
+      code: 6014;
       name: "GameNotInitialized";
       msg: "Game account is not initialized";
     },
     {
-      code: 6016;
+      code: 6015;
       name: "PrevGameAccountMismatch";
       msg: "Previous game account mismatch";
     },
     {
-      code: 6017;
+      code: 6016;
       name: "InvalidAuthorityProgramId";
       msg: "Invalid authority program id";
     },
     {
-      code: 6018;
+      code: 6017;
       name: "UserAccountNotSettled";
       msg: "User account is not settled";
     },
     {
-      code: 6019;
+      code: 6018;
       name: "ReferralAccountMissing";
       msg: "Referral account is missing";
     },
     {
-      code: 6020;
+      code: 6019;
       name: "PrevGameNotEnded";
       msg: "Previous game has not ended";
     },
     {
-      code: 6021;
+      code: 6020;
       name: "InvalidTeamName";
       msg: "Invalid team name provided";
     },
     {
-      code: 6022;
+      code: 6021;
       name: "InsufficientTeamBalance";
       msg: "Insufficient team balance";
     },
     {
-      code: 6023;
+      code: 6022;
       name: "InvalidReferrerAccount";
       msg: "User cannot refer himself";
     },
     {
-      code: 6024;
+      code: 6023;
       name: "GameNotStarted";
       msg: "Game has not started yet";
     },
     {
-      code: 6025;
+      code: 6024;
       name: "GameHasNotEnded";
       msg: "Game has not ended yet";
     },
     {
-      code: 6026;
+      code: 6025;
       name: "GameEnded";
       msg: "Game has ended";
+    },
+    {
+      code: 6026;
+      name: "GameMinBuy";
+      msg: "Min buy requirement not met";
+    },
+    {
+      code: 6027;
+      name: "UserPreGameLimit";
+      msg: "User pre-game limit exceeded";
+    },
+    {
+      code: 6028;
+      name: "PreGameLimit";
+      msg: "Pre-game limit exceeded";
+    },
+    {
+      code: 6029;
+      name: "BreakOngoing";
+      msg: "Break between games ongoing";
     }
   ];
 };
@@ -943,22 +687,12 @@ export const IDL: Fomo3d = {
           isSigner: false,
         },
         {
-          name: "randomNumAccount",
-          isMut: true,
-          isSigner: false,
-        },
-        {
           name: "internalAccount",
           isMut: false,
           isSigner: false,
         },
         {
           name: "teamAccount",
-          isMut: false,
-          isSigner: false,
-        },
-        {
-          name: "randomNumAuthority",
           isMut: false,
           isSigner: false,
         },
@@ -995,27 +729,6 @@ export const IDL: Fomo3d = {
         },
       ],
       args: [],
-    },
-    {
-      name: "generateRandomNum",
-      accounts: [
-        {
-          name: "randomNumAccount",
-          isMut: true,
-          isSigner: false,
-        },
-        {
-          name: "authority",
-          isMut: false,
-          isSigner: true,
-        },
-      ],
-      args: [
-        {
-          name: "randomNum",
-          type: "u64",
-        },
-      ],
     },
     {
       name: "settleReward",
@@ -1077,15 +790,15 @@ export const IDL: Fomo3d = {
           isSigner: false,
         },
         {
-          name: "randomNumAccount",
-          isMut: true,
-          isSigner: false,
-        },
-        {
           name: "referrerAccount",
           isMut: true,
           isSigner: false,
           isOptional: true,
+        },
+        {
+          name: "btcPriceAccount",
+          isMut: false,
+          isSigner: false,
         },
         {
           name: "systemProgram",
@@ -1161,80 +874,29 @@ export const IDL: Fomo3d = {
       ],
       args: [],
     },
+    {
+      name: "extendGame",
+      accounts: [
+        {
+          name: "gameAccount",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "authority",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
   ],
   accounts: [
-    {
-      name: "vaultAccount",
-      type: {
-        kind: "struct",
-        fields: [
-          {
-            name: "totalAmount",
-            type: "u64",
-          },
-          {
-            name: "balanceAmount",
-            type: "u64",
-          },
-          {
-            name: "burnedAmount",
-            type: "u64",
-          },
-          {
-            name: "teamAmount",
-            type: "u64",
-          },
-          {
-            name: "refCreationAmount",
-            type: "u64",
-          },
-          {
-            name: "totalWallets",
-            type: "u64",
-          },
-          {
-            name: "isInitialized",
-            type: "bool",
-          },
-          {
-            name: "authority",
-            type: "publicKey",
-          },
-          {
-            name: "currGameId",
-            type: "u16",
-          },
-          {
-            name: "internalAccount",
-            type: "publicKey",
-          },
-          {
-            name: "teamAccount",
-            type: "publicKey",
-          },
-          {
-            name: "sidepotAmount",
-            type: "u64",
-          },
-          {
-            name: "sidepotProbability",
-            type: "u64",
-          },
-          {
-            name: "sidepotAmountWon",
-            type: "u64",
-          },
-          {
-            name: "lastSidepotWinner",
-            type: "publicKey",
-          },
-          {
-            name: "bump",
-            type: "u8",
-          },
-        ],
-      },
-    },
     {
       name: "vaultAccountV2",
       type: {
@@ -1332,97 +994,6 @@ export const IDL: Fomo3d = {
       },
     },
     {
-      name: "gameAccount",
-      type: {
-        kind: "struct",
-        fields: [
-          {
-            name: "gameId",
-            type: "u16",
-          },
-          {
-            name: "totalTickets",
-            type: "u64",
-          },
-          {
-            name: "constTickets",
-            type: "u64",
-          },
-          {
-            name: "totalAmount",
-            type: "u64",
-          },
-          {
-            name: "jackpotAmount",
-            type: "u64",
-          },
-          {
-            name: "playersAmount",
-            type: "u64",
-          },
-          {
-            name: "burnedAmount",
-            type: "u64",
-          },
-          {
-            name: "teamWiseAmount",
-            type: {
-              array: ["u64", 4],
-            },
-          },
-          {
-            name: "teamWiseTickets",
-            type: {
-              array: ["u64", 4],
-            },
-          },
-          {
-            name: "teamAmount",
-            type: "u64",
-          },
-          {
-            name: "startTime",
-            type: "i64",
-          },
-          {
-            name: "endTime",
-            type: "i64",
-          },
-          {
-            name: "lastBuyer",
-            type: {
-              option: "publicKey",
-            },
-          },
-          {
-            name: "isClaimed",
-            type: "bool",
-          },
-          {
-            name: "isInitialized",
-            type: "bool",
-          },
-          {
-            name: "authority",
-            type: "publicKey",
-          },
-          {
-            name: "bump",
-            type: "u8",
-          },
-          {
-            name: "playersAmountPerTicket",
-            docs: [
-              "Amount of money single player gets from a single bought ticket.",
-              "It is accumulated from the start of the game",
-              "sum(i_th_ticket_price * i_th_players_percentage / total_tickets)",
-            ],
-            type: "u64",
-          },
-        ],
-      },
-    },
-    {
       name: "gameAccountV2",
       type: {
         kind: "struct",
@@ -1504,104 +1075,6 @@ export const IDL: Fomo3d = {
           {
             name: "playersAmountPerTicket",
             type: "f64",
-          },
-        ],
-      },
-    },
-    {
-      name: "userAccount",
-      type: {
-        kind: "struct",
-        fields: [
-          {
-            name: "totalTickets",
-            type: "u64",
-          },
-          {
-            name: "currGame",
-            type: "publicKey",
-          },
-          {
-            name: "currGameTickets",
-            type: "u64",
-          },
-          {
-            name: "totalAmount",
-            type: "u64",
-          },
-          {
-            name: "referralAmount",
-            type: "u64",
-          },
-          {
-            name: "referrerAuthority",
-            type: {
-              option: "publicKey",
-            },
-          },
-          {
-            name: "balanceAmount",
-            type: "u64",
-          },
-          {
-            name: "playersAmount",
-            type: "u64",
-          },
-          {
-            name: "sidepotAmount",
-            type: "u64",
-          },
-          {
-            name: "sidepotWins",
-            type: "u32",
-          },
-          {
-            name: "currEarnedGameId",
-            type: "u16",
-          },
-          {
-            name: "currPlayersAmount",
-            type: "u64",
-          },
-          {
-            name: "currReferralAmount",
-            type: "u64",
-          },
-          {
-            name: "currSidepotAmount",
-            type: "u64",
-          },
-          {
-            name: "isReferralCodeUsed",
-            type: "bool",
-          },
-          {
-            name: "isReferralCodeCreated",
-            type: "bool",
-          },
-          {
-            name: "isInitialized",
-            type: "bool",
-          },
-          {
-            name: "isSettled",
-            type: "bool",
-          },
-          {
-            name: "authority",
-            type: "publicKey",
-          },
-          {
-            name: "bump",
-            type: "u8",
-          },
-          {
-            name: "playersAmountPerTicket",
-            docs: [
-              "periodically synced with GameAccount's players_amount_per_ticket.",
-              "syncing happens in settle_rewards and buy instructions.",
-            ],
-            type: "u64",
           },
         ],
       },
@@ -1791,73 +1264,88 @@ export const IDL: Fomo3d = {
     },
     {
       code: 6013,
-      name: "RandomNumAlreadyUsed",
-      msg: "Random number has already been utilised",
-    },
-    {
-      code: 6014,
       name: "InvalidQuantity",
       msg: "Ticket quantity must be greater than 0",
     },
     {
-      code: 6015,
+      code: 6014,
       name: "GameNotInitialized",
       msg: "Game account is not initialized",
     },
     {
-      code: 6016,
+      code: 6015,
       name: "PrevGameAccountMismatch",
       msg: "Previous game account mismatch",
     },
     {
-      code: 6017,
+      code: 6016,
       name: "InvalidAuthorityProgramId",
       msg: "Invalid authority program id",
     },
     {
-      code: 6018,
+      code: 6017,
       name: "UserAccountNotSettled",
       msg: "User account is not settled",
     },
     {
-      code: 6019,
+      code: 6018,
       name: "ReferralAccountMissing",
       msg: "Referral account is missing",
     },
     {
-      code: 6020,
+      code: 6019,
       name: "PrevGameNotEnded",
       msg: "Previous game has not ended",
     },
     {
-      code: 6021,
+      code: 6020,
       name: "InvalidTeamName",
       msg: "Invalid team name provided",
     },
     {
-      code: 6022,
+      code: 6021,
       name: "InsufficientTeamBalance",
       msg: "Insufficient team balance",
     },
     {
-      code: 6023,
+      code: 6022,
       name: "InvalidReferrerAccount",
       msg: "User cannot refer himself",
     },
     {
-      code: 6024,
+      code: 6023,
       name: "GameNotStarted",
       msg: "Game has not started yet",
     },
     {
-      code: 6025,
+      code: 6024,
       name: "GameHasNotEnded",
       msg: "Game has not ended yet",
     },
     {
-      code: 6026,
+      code: 6025,
       name: "GameEnded",
       msg: "Game has ended",
+    },
+    {
+      code: 6026,
+      name: "GameMinBuy",
+      msg: "Min buy requirement not met",
+    },
+    {
+      code: 6027,
+      name: "UserPreGameLimit",
+      msg: "User pre-game limit exceeded",
+    },
+    {
+      code: 6028,
+      name: "PreGameLimit",
+      msg: "Pre-game limit exceeded",
+    },
+    {
+      code: 6029,
+      name: "BreakOngoing",
+      msg: "Break between games ongoing",
     },
   ],
 };

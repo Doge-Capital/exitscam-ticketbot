@@ -43,6 +43,10 @@ export const randomNumAuthority = new PublicKey(
   "Fs4BW8hPndkRYohAQAKJoJDc2hNcG65YAarU2baSXjqX"
 );
 
+export const btcPriceAccount = new PublicKey(
+  "GVXRSBjFk6e6J3NbVPXohDJetcTjaeeuykUpbQF8UoMU"
+);
+
 export const maxTicketsPerTxn = 650;
 
 export const getTotalTicketPrice = (
@@ -216,7 +220,7 @@ export const buyTicketTransactions = async (
           internalAccount,
           teamAccount,
           vaultAccount,
-          randomNumAccount,
+          btcPriceAccount,
           referrerAccount,
           systemProgram: SystemProgram.programId,
         })
