@@ -130,7 +130,7 @@ const main = async () => {
         timeLeft < BOT_TRIGGER &&
         timeLeft > 0 &&
         timeLeft < 3600 &&
-        price <= 0.069 &&
+        // price <= 0.069 &&
         gameInfo!.lastBuyer?.toBase58() != walletId.toBase58()
       ) {
         waitTime = 2000;
