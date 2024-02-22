@@ -4,15 +4,19 @@ import {
   getBuyTicketAccounts,
   getTotalTicketPrice,
   connection,
-  programId,
+  fomoProgramId,
   authority,
   VAULT_SEED_V2,
   GAME_SEED_V2,
-} from "./helper";
+  fomoJupProgramId,
+} from "./utils/helper";
 import { PublicKey, Keypair } from "@solana/web3.js";
-import { IDL } from "./IDL";
+import { IDL as fomoIDL } from "./utils/fomoIDL";
+import { IDL as fomoJupIDL } from "./utils/fomoJupIDL";
 import { config } from "dotenv";
 import { encode } from "@coral-xyz/anchor/dist/cjs/utils/bytes/utf8";
+import recentBuyers from "./models/recentBuyers";
+import connectDatabase from "./utils/database";
 config();
 
 const devWallet = Uint8Array.from(JSON.parse(process.env.SCRIPT_KEYPAIR!));
@@ -40,7 +44,37 @@ server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
+const handleBuyEvent = async (
+  fomoProgramId: PublicKey,
+  IDL: any,
+  dbName: string
+) => {
+  const provider = new AnchorProvider(connection, new Wallet(devWalletKey), {
+    commitment: "processed",
+  });
+  const program = new Program(IDL, fomoProgramId, provider);
+
+  program.addEventListener("BuyTicketEvent", async (event, _, signature) => {
+    await connectDatabase(dbName);
+
+    const { buyer, gameId, quantity, totalAmount } = event;
+
+    await recentBuyers.create({
+      buyer: (buyer as any).toBase58(),
+      gameId,
+      numOfTickets: (quantity as any).toNumber(),
+      totalAmount,
+      txnSignature: signature,
+    });
+  });
+
+  console.log("Fomo buyTicket event listener started");
+};
+
 const main = async () => {
+  handleBuyEvent(fomoProgramId, fomoIDL, "exitscam");
+  handleBuyEvent(fomoJupProgramId, fomoJupIDL, "jupexit");
+
   while (true) {
     try {
       const provider = new AnchorProvider(
@@ -48,7 +82,7 @@ const main = async () => {
         new Wallet(devWalletKey),
         { commitment: "processed" }
       );
-      const program = new Program(IDL, programId, provider);
+      const program = new Program(fomoIDL, fomoProgramId, provider);
 
       let [vaultAccount] = PublicKey.findProgramAddressSync(
         [encode(VAULT_SEED_V2), authority.toBuffer()],

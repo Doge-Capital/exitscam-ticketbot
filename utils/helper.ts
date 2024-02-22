@@ -1,5 +1,5 @@
 import { Program, utils, BN } from "@coral-xyz/anchor";
-import { Fomo3d } from "./IDL";
+import { Fomo3d } from "./fomoIDL";
 import {
   ComputeBudgetProgram,
   SystemProgram,
@@ -19,8 +19,11 @@ export const USER_SEED_V2 = "user_account000_v2";
 
 export const connection = new Connection(process.env.BACKEND_RPC!, "processed");
 
-export const programId = new PublicKey(
+export const fomoProgramId = new PublicKey(
   "FoMotN3mJB5QVorWrgF7gHRoguUYRr2dApDondesrYe"
+);
+export const fomoJupProgramId = new PublicKey(
+  "3ZVntpabyX5dh71gHeyEHcqUhV7Gu3irUT25tm8eQPnJ"
 );
 export const memoProgramId = new PublicKey(
   "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"

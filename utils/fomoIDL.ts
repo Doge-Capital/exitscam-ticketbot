@@ -520,6 +520,43 @@ export type Fomo3d = {
       };
     }
   ];
+  events: [
+    {
+      name: "BuyTicketEvent";
+      fields: [
+        {
+          name: "buyer";
+          type: "publicKey";
+          index: false;
+        },
+        {
+          name: "gameId";
+          type: "u16";
+          index: false;
+        },
+        {
+          name: "team";
+          type: "string";
+          index: false;
+        },
+        {
+          name: "quantity";
+          type: "u64";
+          index: false;
+        },
+        {
+          name: "totalAmount";
+          type: "f64";
+          index: false;
+        },
+        {
+          name: "isInitialPhase";
+          type: "bool";
+          index: false;
+        }
+      ];
+    }
+  ];
   errors: [
     {
       code: 6000;
@@ -1194,6 +1231,43 @@ export const IDL: Fomo3d = {
           },
         ],
       },
+    },
+  ],
+  events: [
+    {
+      name: "BuyTicketEvent",
+      fields: [
+        {
+          name: "buyer",
+          type: "publicKey",
+          index: false,
+        },
+        {
+          name: "gameId",
+          type: "u16",
+          index: false,
+        },
+        {
+          name: "team",
+          type: "string",
+          index: false,
+        },
+        {
+          name: "quantity",
+          type: "u64",
+          index: false,
+        },
+        {
+          name: "totalAmount",
+          type: "f64",
+          index: false,
+        },
+        {
+          name: "isInitialPhase",
+          type: "bool",
+          index: false,
+        },
+      ],
     },
   ],
   errors: [
