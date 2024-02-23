@@ -57,13 +57,16 @@ const handleBuyEvent = async (
   program.addEventListener("BuyTicketEvent", async (event, _, signature) => {
     await connectDatabase(dbName);
 
-    const { buyer, gameId, quantity, totalAmount } = event;
+    const { buyer, gameId, quantity, totalAmount, team, isInitialPhase } =
+      event;
 
     await recentBuyers.create({
       buyer: (buyer as any).toBase58(),
       gameId,
       numOfTickets: (quantity as any).toNumber(),
       totalAmount,
+      team,
+      isInitialPhase,
       txnSignature: signature,
     });
   });
