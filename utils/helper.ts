@@ -212,7 +212,7 @@ export const buyTicketTransactions = async (
 
     transaction.add(
       ComputeBudgetProgram.setComputeUnitLimit({ units: 1_400_000 }),
-      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 200_000 }),
+      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 800_000 }),
       await program.methods
         .buyTicket(team, new BN(quantity))
         .accounts({
