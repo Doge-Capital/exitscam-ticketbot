@@ -136,9 +136,9 @@ const main = async () => {
 
       let price = getTotalTicketPrice(ticketStartNum, 1);
 
-      let BOT_TRIGGER = 20;
+      let BOT_TRIGGER = 30;
 
-      if (price > 1) BOT_TRIGGER = 25;
+      if (price > 1) BOT_TRIGGER = 35;
       // let i = 0;
       // let flag = true;
 
