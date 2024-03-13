@@ -182,12 +182,8 @@ const main = async () => {
           );
 
         transactions[0].partialSign(devWalletKey);
-        let txSig = await connection.sendRawTransaction(
-          transactions[0].serialize(),
-          {
-            skipPreflight: true,
-          }
-        );
+
+        let txSig = await retryTxn(transactions[0]);
 
         console.log("txSig: ", txSig);
       }
@@ -199,3 +195,43 @@ const main = async () => {
 };
 
 main();
+
+async function retryTxn(transaction) {
+  let blockhashContext = (await connection.getLatestBlockhashAndContext())
+    .value;
+  let blockheight = await connection.getBlockHeight();
+
+  let flag = true;
+
+  let txn;
+
+  let j = 0;
+
+  while (blockheight < blockhashContext.lastValidBlockHeight && flag) {
+    txn = await connection.sendRawTransaction(transaction.serialize(), {
+      skipPreflight: true,
+    });
+    await new Promise((r) => setTimeout(r, 500));
+    console.log("retry count: ", ++j);
+    connection
+      .confirmTransaction({
+        lastValidBlockHeight: blockhashContext.lastValidBlockHeight,
+        blockhash: blockhashContext.blockhash,
+        signature: txn,
+      })
+      .then((data) => {
+        if ((data.value as any).confirmationStatus) {
+          console.log("confirmed txn", data.value, txn);
+          txn = txn;
+          flag = false;
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+    blockheight = await connection.getBlockHeight();
+  }
+
+  return txn;
+}
