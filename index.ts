@@ -170,7 +170,7 @@ const main = async () => {
         // price <= 0.069 &&
         gameInfo!.lastBuyer?.toBase58() != walletId.toBase58()
       ) {
-        waitTime = 2000;
+        waitTime = 500;
 
         const { transactions, blockhash, lastValidBlockHeight } =
           await buyTicketTransactions(
@@ -185,7 +185,8 @@ const main = async () => {
 
         let txSig = await retryTxn(transactions[0]);
 
-        console.log("txSig: ", txSig);
+        if (txSig) console.log("txSig: ", txSig);
+        else console.log("confirmation failed: ", txSig);
       }
       await new Promise((r) => setTimeout(r, waitTime));
     } catch (e) {
@@ -205,6 +206,8 @@ async function retryTxn(transaction) {
 
   let txn;
 
+  let finalTxn;
+
   let j = 0;
 
   while (blockheight < blockhashContext.lastValidBlockHeight && flag) {
@@ -222,7 +225,7 @@ async function retryTxn(transaction) {
       .then((data) => {
         if ((data.value as any).confirmationStatus) {
           console.log("confirmed txn", data.value, txn);
-          txn = txn;
+          finalTxn = txn;
           flag = false;
         }
       })
@@ -233,5 +236,5 @@ async function retryTxn(transaction) {
     blockheight = await connection.getBlockHeight();
   }
 
-  return txn;
+  return finalTxn;
 }
