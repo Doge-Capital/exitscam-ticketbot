@@ -10,7 +10,7 @@ import {
   GAME_SEED_V2,
   fomoJupProgramId,
 } from "./utils/helper";
-import { PublicKey, Keypair } from "@solana/web3.js";
+import { PublicKey, Keypair, Transaction } from "@solana/web3.js";
 import { IDL as fomoIDL } from "./utils/fomoIDL";
 import { IDL as fomoJupIDL } from "./utils/fomoJupIDL";
 import { config } from "dotenv";
@@ -197,16 +197,16 @@ const main = async () => {
 
 main();
 
-async function retryTxn(transaction) {
+async function retryTxn(transaction: Transaction) {
   let blockhashContext = (await connection.getLatestBlockhashAndContext())
     .value;
   let blockheight = await connection.getBlockHeight();
 
   let flag = true;
 
-  let txn;
+  let txn: string = "";
 
-  let finalTxn;
+  let finalTxn: string = "";
 
   let j = 0;
 
