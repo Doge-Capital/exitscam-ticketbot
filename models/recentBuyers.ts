@@ -13,7 +13,6 @@ const recentBuyerSchema = new mongoose.Schema(
     team: {
       type: String,
       enum: ["dragon", "bear", "bull", "whale"],
-      required: true,
     },
     numOfTickets: {
       type: Number,
@@ -25,7 +24,6 @@ const recentBuyerSchema = new mongoose.Schema(
     },
     isInitialPhase: {
       type: Boolean,
-      required: true,
     },
     txnSignature: {
       type: String,

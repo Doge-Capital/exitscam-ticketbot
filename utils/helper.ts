@@ -236,3 +236,13 @@ export const buyTicketTransactions = async (
 
   return { transactions, blockhash, lastValidBlockHeight };
 };
+
+export const tiers = {
+  0: { limit: 300, multiplier: 0.5 },
+  1: { limit: 3000, multiplier: 1 },
+  2: { limit: 15000, multiplier: 1.05 },
+  3: { limit: 40000, multiplier: 1.15 },
+  4: { limit: 75000, multiplier: 1.3 },
+  5: { limit: 150000, multiplier: 1.5 },
+  6: { limit: 600000, multiplier: 1.75 },
+};
